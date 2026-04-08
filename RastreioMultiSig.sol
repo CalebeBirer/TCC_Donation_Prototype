@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT  -- uint overflows and underflows automatic revert
 pragma solidity ^0.8.20;
 
-contract RastreioMultiSigSimples {
+contract RastreioMultiSig {
     mapping(address => bool) public ehAprovador;  //lista “set” de quem pode agir no contrato
     uint256 public quorumMinimo; //número mínimo de aprovações para executar um pedido -- como e publico o solidity cria getters automaticamente
 
