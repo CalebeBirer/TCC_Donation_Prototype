@@ -40,7 +40,7 @@ contract RastreioMultiSigSimples {
     }
 
     receive() external payable {} //Permite enviar ETH diretamente para o contrato (transfer/metamask).
-
+    // CRIA PEDIDO
     function criarPedido(address destino_, uint256 valorWei_, string memory descricao_) external soAprovador {
         //VALIDACAO
         require(destino_ != address(0), "Destino invalido");
