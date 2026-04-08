@@ -96,8 +96,13 @@ contract RastreioMultiSig {
         view
         returns (address destino, uint256 valorWei, string memory descricao, uint256 aprovacoes, bool executado)
     {
+        // Validação: garante que o identificador (ID) solicitado existe no histórico do contrato
         require(id < pedidos.length, "Pedido nao existe");
+
+         // Localização: cria uma referência temporária para o pedido armazenado na 'blockchain' (storage)
         Pedido storage p = pedidos[id];
+
+         // Retorno: disponibiliza de forma estruturada os metadados para fins de auditor
         return (p.destino, p.valorWei, p.descricao, p.aprovacoes, p.executado);
     }
 }
