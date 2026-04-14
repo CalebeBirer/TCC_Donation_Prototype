@@ -40,12 +40,15 @@ contract RastreioMultiSig {
     }
 
     receive() external payable {} //Permite enviar ETH diretamente para o contrato (transfer/metamask).
-    // CRIA PEDIDO
+
+    // CRIA PEDIDO - Função externa para criar um novo pedido de doação
     function criarPedido(address destino_, uint256 valorWei_, string memory descricao_) external soAprovador {
-        //VALIDACAO
+        // VALIDAÇÃO - impede que o endereço destino seja nulo (endereço zero)
         require(destino_ != address(0), "Destino invalido");
+        // VALIDAÇÃO - garante que o valor da doação seja maior que zero
         require(valorWei_ > 0, "Valor zero");
 
+        // ARMAZENAMENTO - cria e adiciona a estrutura do pedido ao array dinâmico ‘pedidos’
         pedidos.push(Pedido({
             destino: destino_, //cria e armazena no array
             valorWei: valorWei_,
@@ -54,19 +57,29 @@ contract RastreioMultiSig {
             executado: false
         }));
 
+        // RASTREABILIDADE - captura o ID gerado e emite um evento para auditoria na rede
         uint256 id = pedidos.length - 1;
         emit PedidoCriado(id, msg.sender, destino_, valorWei_, descricao_);
     }
 
-    // APROVA PEDIDO
+    // APROVA PEDIDO - Função externa para registrar a aprovação de um pedido
     function aprovarPedido(uint256 id) external soAprovador {
+        // VALIDAÇÃO - verifica se o ID informado existe no histórico do contrato
         require(id < pedidos.length, "Pedido nao existe");
+
+        // SEGURANÇA - impede a aprovação de um pedido que já foi liquidado financeiramente
         require(!pedidos[id].executado, "Ja executado");
+
+        // REGRA DE INTEGRIDADE - impede que o mesmo endereço assine o pedido mais de uma vez
         require(!aprovou[id][msg.sender], "Ja aprovou");
 
+        // REGISTRO - marca o endereço como ‘true’ para este ID específico
         aprovou[id][msg.sender] = true;
+
+        // GOVERNANÇA - incrementa o contador de assinaturas para atingir o quórum mínimo
         pedidos[id].aprovacoes += 1;
 
+        // RASTREABILIDADE: emite um evento capturando o aprovador e o total de assinaturas
         emit PedidoAprovado(id, msg.sender, pedidos[id].aprovacoes);
     }
 
@@ -90,19 +103,19 @@ contract RastreioMultiSig {
         return pedidos.length;
     }
 
-    // valida ID e retorna os campos do struct
+    // CONSULTA PEDIDO - Função externa de consulta que retorna os campos da estrutura Pedido
     function getPedido(uint256 id) 
         external
         view
         returns (address destino, uint256 valorWei, string memory descricao, uint256 aprovacoes, bool executado)
     {
-        // Validação: garante que o identificador (ID) solicitado existe no histórico do contrato
+        // VALIDAÇÃO: garante que o identificador (ID) solicitado existe no histórico do contrato
         require(id < pedidos.length, "Pedido nao existe");
 
-         // Localização: cria uma referência temporária para o pedido armazenado na 'blockchain' (storage)
+         // LOCALIZAÇÃO: cria uma referência temporária para o pedido armazenado na 'blockchain' (storage)
         Pedido storage p = pedidos[id];
 
-         // Retorno: disponibiliza de forma estruturada os metadados para fins de auditor
+         // RETORNO: disponibiliza de forma estruturada os metadados para fins de auditor
         return (p.destino, p.valorWei, p.descricao, p.aprovacoes, p.executado);
     }
 }
