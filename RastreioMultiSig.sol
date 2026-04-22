@@ -83,7 +83,7 @@ contract RastreioMultiSig {
         emit PedidoAprovado(id, msg.sender, pedidos[id].aprovacoes);
     }
 
-    // regras, não executado, aprovacoes >= quorum e saldo do contrato suficiente
+    // Função externa para liquidar o pedido após atingir o “quórum”, regras, aprovacoes >= quorum e saldo do contrato suficiente
     function executarPedido(uint256 id) external soAprovador {
         // Validação - garante que o identificador (ID) informado é válido
         require(id < pedidos.length, "Pedido nao existe");
