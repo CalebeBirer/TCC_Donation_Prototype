@@ -83,19 +83,26 @@ contract RastreioMultiSig {
         emit PedidoAprovado(id, msg.sender, pedidos[id].aprovacoes);
     }
 
-    // regras, nao executado, aprovacoes >= quorum e saldo do contrato suficiente
+    // regras, não executado, aprovacoes >= quorum e saldo do contrato suficiente
     function executarPedido(uint256 id) external soAprovador {
+        // Validação - garante que o identificador (ID) informado é válido
         require(id < pedidos.length, "Pedido nao existe");
+        // Referência - acessa os dados do pedido na memória permanente
         Pedido storage p = pedidos[id];
 
+        // Segurança - trava de reentrada que impede que o pedido seja pago duas vezes
         require(!p.executado, "Ja executado");
+        //Governança - verifica se o “quórum” mínimo de assinaturas foi atingido
         require(p.aprovacoes >= quorumMinimo, "Aprovacoes insuficientes");
+        // Integridade financeira - garante que o contrato possui saldo para a transferência
         require(address(this).balance >= p.valorWei, "Saldo insuficiente no contrato");
 
         p.executado = true;
+        // Transferência - realiza o envio de ETH para o endereço destino
         (bool ok, ) = payable(p.destino).call{value: p.valorWei}("");
         require(ok, "Falha ao transferir");
 
+        // Rastreabilidade - emite um evento final confirmando a liquidação pública
         emit PedidoExecutado(id, p.destino, p.valorWei);
     }
 
