@@ -71,6 +71,3 @@ O protótipo demonstrou a rastreabilidade on-chain, mas possui as seguintes limi
 * **Calebe Birer** - [https://www.linkedin.com/in/calebe-birer/]
 * **Orientador - Luciano Bergamo** [https://www.linkedin.com/in/luciano-b%C3%A9rgamo-3373b2114/]
 
-## 📝 Licença
-
-Este projeto está licenciado sob a licença MIT - consulte o arquivo `LICENSE` para detalhes.
