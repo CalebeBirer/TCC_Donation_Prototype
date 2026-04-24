@@ -1,6 +1,3 @@
-Com base no seu projeto de pesquisa e na implementação técnica descrita nos documentos, aqui está uma proposta detalhada para o arquivo **README.md** do seu repositório no GitHub. Este modelo organiza as informações de forma profissional, facilitando a compreensão de "não-devs" (conforme sugerido pelo seu orientador) e fornecendo o rigor técnico necessário para Engenharia de Software.
-
----
 
 # Transparência de Doações com Blockchain: Protótipo de Rastreabilidade
 
