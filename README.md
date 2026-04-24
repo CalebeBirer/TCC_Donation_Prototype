@@ -69,4 +69,5 @@ Este projeto foi desenvolvido como parte de um Trabalho de Conclusão de Curso (
 
 ---
 **Autor:** Calebe Ocanha Isacc Birer
-**Repositório:** [https://github.com/CalebeBirer/TCC_Donation_Prototype](https://github.com/CalebeBirer/TCC_Donation_Prototype)
+**Orientador:** Luciano Bérgmo
+
